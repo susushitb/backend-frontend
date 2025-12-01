@@ -30,7 +30,7 @@ router.post('/', async (req, res) => {
 router.get('/', async (req, res) => {
   try {
     // A feladatokhoz csatoljuk a hozzájuk tartozó felhasználó adatait is
-    const tasks = await TaskModel.findAll({ include: 'user' });
+    const tasks = await TaskModel.findAll({ include: { model: UserModel } });
     res.json(tasks);
   } catch (error) {
     res.status(500).json({ error: 'Hiba a feladatok lekérdezésekor.' });

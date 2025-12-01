@@ -30,3 +30,8 @@ initializeApp();
 app.use('/tasks', taskRoutes);
 // A /users kezdetű kéréseket a userRoutes kezeli
 app.use('/users', userRoutes);
+
+// Gyökér útvonal
+app.get('/', (req, res) => {
+  res.json({ message: 'A szerver sikeresen fut!' });
+});
