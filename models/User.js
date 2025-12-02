@@ -17,7 +17,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     password: {
       type: DataTypes.STRING,
-      allowNull: false // Kötelező
+      allowNull: false, // Kötelező
+      defaultValue: 'temp_password'
     }
   }, {
         // Ezzel kikapcsoljuk az automatikus 'createdAt' és 'updatedAt' mezők létrehozását
