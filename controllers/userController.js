@@ -1,4 +1,5 @@
 const userService = require('../services/userService');
+const { User } = require('../db').models;
 
 // POST /users - Új felhasználó létrehozása
 const createUser = async (req, res) => {
@@ -42,12 +43,6 @@ const deleteUser = async (req, res) => {
   }
 };
 
-module.exports = {
-  createUser,
-  getAllUsers,
-  deleteUser,
-};
-
 const register = async (req, res) => {
     try {
       if (!req.body.email || !req.body.password) {
@@ -61,5 +56,37 @@ const register = async (req, res) => {
     }
   };
 
-module.exports.register = register;
-module.exports = { createUser, getAllUsers, deleteUser, register };
+  const login = async (req, res) => {
+    try {
+      const { email, password } = req.body;
+  
+      if (!email || !password) {
+        return res.status(400).json({ error: 'Email and password are required.' });
+      }
+  
+      const user = await User.findOne({ where: { email } });
+  
+      if (!user) {
+        return res.status(401).json({ error: 'Invalid credentials.' });
+      }
+  
+      const isMatch = await user.comparePassword(password);
+  
+      if (!isMatch) {
+        return res.status(401).json({ error: 'Invalid credentials.' });
+      }
+  
+      res.status(200).json({ message: 'Login successful.' });
+    } catch (error) {
+      console.error('Error during login:', error);
+      res.status(500).json({ error: 'Server error.' });
+    }
+  };
+
+module.exports = {
+  createUser,
+  getAllUsers,
+  deleteUser,
+  register,
+  login,
+};

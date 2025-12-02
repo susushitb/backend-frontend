@@ -11,6 +11,9 @@ router.get('/', userController.getAllUsers);
 // POST /users/register - Új felhasználó regisztrálása
 router.post('/register', userController.register);
 
+// POST /users/login - Felhasználó bejelentkezése
+router.post('/login', userController.login);
+
 // DELETE /users/:id - Felhasználó és a hozzá tartozó feladatok törlése
 router.delete('/:id', userController.deleteUser);
 

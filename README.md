@@ -4,7 +4,7 @@ A simple backend application built with Node.js and the Express framework. It us
 
 ## Features
 
--   **User Management:** Create, register, list, and delete users.
+-   **User Management:** Create, register, login, list, and delete users. Passwords are securely hashed using bcrypt.
 -   **Task Management:** Create, list, and delete tasks associated with users.
 -   **Pagination:** Supports paginated fetching for tasks.
 
@@ -51,15 +51,28 @@ The server will start on `http://localhost:3000`. It uses `nodemon` for developm
 ### Users (`/users`)
 
 -   **`POST /users/register`**
-    -   Registers a new user.
+    -   Registers a new user. Passwords are automatically hashed.
     -   **Request Body:**
         ```json
         {
           "email": "test@example.com",
-          "name": "Test User"
+          "name": "Test User",
+          "password": "a_strong_password"
         }
         ```
-    -   **Success Response (201):** Returns the created user object.
+    -   **Success Response (201):** Returns the created user object (without the password).
+
+-   **`POST /users/login`**
+    -   Authenticates a user and returns a success message.
+    -   **Request Body:**
+        ```json
+        {
+          "email": "test@example.com",
+          "password": "a_strong_password"
+        }
+        ```
+    -   **Success Response (200):** `{ "message": "Login successful." }`
+    -   **Error Response (401):** `{ "error": "Invalid credentials." }`
 
 -   **`GET /users`**
     -   Retrieves a list of all users.

@@ -1,65 +1,61 @@
-### 1. LÉPÉS: Hozz létre egy felhasználót
-# A válaszban kapott "id"-t használd a következő kérésben!
-POST http://localhost:3000/users
+### 1. Register a new user
+POST http://localhost:3000/users/register
 Content-Type: application/json
 
 {
-    "email": "golfoscigány@server.com",
-    "name": "golfgusztáv",
-    "password": "golfi"
+    "email": "testuser@example.com",
+    "name": "Test User",
+    "password": "password123"
 }
 
 ### --------------------------------------------------
 
-### 2. LÉPÉS: Hozz létre egy feladatot a felhasználóhoz
-# Cseréld le a "userId" értékét az előző lépésben kapott ID-ra!
+### 2. Login as the user
+POST http://localhost:3000/users/login
+Content-Type: application/json
+
+{
+    "email": "testuser@example.com",
+    "password": "password123"
+}
+
+### --------------------------------------------------
+
+### 3. Create a task for the user
+# Replace the "userId" with the actual ID from the registration response!
 POST http://localhost:3000/tasks
 Content-Type: application/json
 
 {
-    "title": "Vegyél tejet",
-   "description": "2,8%-os",
-    "userId": 2
+    "title": "Buy milk",
+    "description": "2.8% fat",
+    "userId": 1
 }
 
 ### --------------------------------------------------
 
-### 2. LÉPÉS: Hozz létre egy feladatot a felhasználóhoz
-# Cseréld le a "userId" értékét az előző lépésben kapott ID-ra!
-POST http://localhost:3000/tasks
-Content-Type: application/json
-
-{
-    "title": "Házi feladat",
-   "description": "Csináld meg!",
-    "userId": 3
-}
-
-### --------------------------------------------------
-
-### GET kérés az összes feladat lekérdezésére
+### Get all tasks
 GET http://localhost:3000/tasks
 
-
 ### --------------------------------------------------
 
-### GET kérés az összes felhasználó lekérdezésére
+### Get all users
 GET http://localhost:3000/users
 
-###
+### --------------------------------------------------
 
-DELETE http://localhost:3000/tasks/2
+### Delete a task by ID
+DELETE http://localhost:3000/tasks/1
 
 ### --------------------------------------------------
 
-### Felhasználó törlése (és a hozzá tartozó feladatoké)
-# FONTOS: Cseréld le a '2'-est a törölni kívánt felhasználó valós ID-jára!
-DELETE http://localhost:3000/users/3
+### Delete a user by ID
+# IMPORTANT: Replace '1' with the actual ID of the user you want to delete!
+DELETE http://localhost:3000/users/1
 
 ### --------------------------------------------------
 
-### GET kérés a feladatok lapozott lekérdezésére (pl. 1. oldal)
+### Get paginated tasks (e.g., page 1)
 GET http://localhost:3000/tasks/page/1
 
 ### --------------------------------------------------
-
