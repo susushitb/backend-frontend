@@ -1,58 +1,96 @@
-# Backend API Felhasználók és Feladatok Kezelésére
+# Task and User Management Backend API
 
-Ez egy egyszerű backend alkalmazás, amely Node.js és az Express keretrendszer segítségével készült. Az adatbázis-műveleteket a Sequelize ORM kezeli, és az adatokat egy SQLite adatbázisban tárolja.
+A simple backend application built with Node.js and the Express framework. It uses Sequelize as an ORM to interact with a SQLite database for managing users and their assigned tasks.
 
-## Funkcionalitás
+## Features
 
-Az API lehetővé teszi a felhasználók és a hozzájuk rendelt feladatok alapvető CRUD (Create, Read, Delete) műveleteinek elvégzését.
+-   **User Management:** Create, register, list, and delete users.
+-   **Task Management:** Create, list, and delete tasks associated with users.
+-   **Pagination:** Supports paginated fetching for tasks.
 
-- **Felhasználók:** Létrehozhatók, listázhatók és törölhetők. Minden felhasználónak egyedi email címe van.
-- **Feladatok:** Létrehozhatók, listázhatók és törölhetők. Minden feladat egy adott felhasználóhoz van rendelve.
+## Getting Started
 
-## Telepítés és Futtatás
+### Prerequisites
 
-### Előfeltételek
-- [Node.js](https://nodejs.org/)
-- npm (a Node.js-sel együtt települ)
+-   [Node.js](https://nodejs.org/) installed
+-   npm (included with Node.js)
 
-### Telepítés
-1. Klónozd a repository-t.
-2. Telepítsd a szükséges csomagokat:
-   ```bash
-   npm install
-   ```
+### Installation
 
-### Futtatás
-Az alkalmazás elindításához futtasd a következő parancsot:
+1.  Clone the repository to your local machine:
+    ```bash
+    git clone <repository-url>
+    ```
+2.  Navigate into the project directory:
+    ```bash
+    cd backend-frontend
+    ```
+3.  Install the required dependencies:
+    ```bash
+    npm install
+    ```
+
+### Running the Application
+
+To start the server, run the following command:
+
 ```bash
 npm start
 ```
-A szerver a `http://localhost:3000` címen fog futni. A `nodemon` segítségével a szerver automatikusan újraindul minden kódbeli változtatás után.
 
-## API Végpontok (Endpoints)
+The server will start on `http://localhost:3000`. It uses `nodemon` for development, which automatically restarts the server when code changes are detected.
 
-### Gyökér
-- `GET /`: Egyszerű üdvözlő üzenetet ad vissza, amellyel ellenőrizhető, hogy a szerver fut-e.
-  - **Válasz:** `{"message":"A szerver sikeresen fut!"}`
+## API Endpoints
 
-### Felhasználók (`/users`)
-- `POST /users`: Létrehoz egy új felhasználót.
-  - **Request Body:** `{ "email": "teszt@example.com", "name": "Teszt Felhasználó" }`
-  - **Sikeres válasz (201):** A létrehozott felhasználó adatai.
+### Root
 
-- `GET /users`: Visszaadja az összes felhasználót.
-  - **Sikeres válasz (200):** Egy tömb, amely a felhasználói objektumokat tartalmazza.
+-   **`GET /`**
+    -   A simple welcome message to verify that the server is running.
+    -   **Success Response (200):** `{ "message": "The server is running successfully!" }`
 
-- `DELETE /users/:id`: Töröl egy felhasználót a megadott `id` alapján.
-  - **Sikeres válasz (200):** Törlési megerősítő üzenet.
+### Users (`/users`)
 
-### Feladatok (`/tasks`)
-- `POST /tasks`: Létrehoz egy új feladatot. A `userId`-nak egy létező felhasználóra kell hivatkoznia.
-  - **Request Body:** `{ "title": "Bevásárlás", "description": "Tej, kenyér, tojás", "userId": 1 }`
-  - **Sikeres válasz (201):** A létrehozott feladat adatai.
+-   **`POST /users/register`**
+    -   Registers a new user.
+    -   **Request Body:**
+        ```json
+        {
+          "email": "test@example.com",
+          "name": "Test User"
+        }
+        ```
+    -   **Success Response (201):** Returns the created user object.
 
-- `GET /tasks`: Visszaadja az összes feladatot, a hozzájuk tartozó felhasználói adatokkal együtt.
-  - **Sikeres válasz (200):** Egy tömb, amely a feladat objektumokat tartalmazza, beágyazott `User` objektummal.
+-   **`GET /users`**
+    -   Retrieves a list of all users.
+    -   **Success Response (200):** Returns an array of user objects.
 
-- `DELETE /tasks/:id`: Töröl egy feladatot a megadott `id` alapján.
-  - **Sikeres válasz (200):** Törlési megerősítő üzenet.
+-   **`DELETE /users/:id`**
+    -   Deletes a user by their `id`.
+    -   **Success Response (200):** Returns a confirmation message.
+
+### Tasks (`/tasks`)
+
+-   **`POST /tasks`**
+    -   Creates a new task. The `userId` must correspond to an existing user.
+    -   **Request Body:**
+        ```json
+        {
+          "title": "Buy groceries",
+          "description": "Milk, bread, eggs",
+          "userId": 1
+        }
+        ```
+    -   **Success Response (201):** Returns the created task object.
+
+-   **`GET /tasks`**
+    -   Retrieves a list of all tasks, including the associated user for each task.
+    -   **Success Response (200):** Returns an array of task objects with nested `User` objects.
+
+-   **`GET /tasks/page/:page`**
+    -   Retrieves a paginated list of tasks (20 per page).
+    -   **Success Response (200):** Returns an array of task objects for the specified page.
+
+-   **`DELETE /tasks/:id`**
+    -   Deletes a task by its `id`.
+    -   **Success Response (200):** Returns a confirmation message.
